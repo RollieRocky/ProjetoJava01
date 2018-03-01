@@ -1,5 +1,7 @@
 package br.up.edu.model;
 
+import br.up.edu.seguranca.HashEnum;
+
 public class Usuario
 {
 	//---------Atributos--------------
@@ -8,21 +10,27 @@ public class Usuario
 	
 	private String login;
 		
-	private String senha;
-	
-	
+	private byte[] senha;
+		
 	//---------Construtores-----------
-	
-	
+		
 	public Usuario(String nome,String login,String senha)
 	{
 		this.nome = nome;
 		this.login = login;
-		this.senha = senha;
-		UsuarioLista.InserirUsuario(this);
+		this.senha = UsuarioLogic.GerarHashSenha(senha,HashEnum.MD5.name());
+		UsuarioLogic.InserirUsuario(this);
 	}
 	
+	//---------OverrideToString-------
 	
+	@Override
+	public String toString()
+	{
+		return "Usuário:\n"
+				+ "Nome: " + nome + ".\nLogin: " + login + ".";
+	}
+		
 	//--------Getters & Setters-------
 
 	public String getNome()
@@ -45,12 +53,12 @@ public class Usuario
 		this.login = login;
 	}
 
-	public String getSenha()
+	public byte[] getSenha()
 	{
 		return senha;
 	}
 
-	public void setSenha(String senha)
+	public void setSenha(byte[] senha)
 	{
 		this.senha = senha;
 	}
